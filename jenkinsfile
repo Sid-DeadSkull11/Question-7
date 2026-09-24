@@ -1,0 +1,28 @@
+pipeline{
+    agents any
+    
+    stages{
+        
+        stage('Checkout'){
+            steps{
+                checkout scmGit(branches: [[name: '**']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/Sid-DeadSkull11/Question-7.git']])
+            }
+        }
+        
+        stage('Build'){
+            steps{
+                bat 'python -m py_compile app.py'
+                sleep(time:20, unit:'SECONDS')
+                milestone(1)
+                echo 'Build stage passed milestone 1'
+            }
+        }
+        
+        stage('Deploy') {
+            steps {
+                milestone(2)
+                echo 'Deploy stage passed milestone 2, Deploying application'
+            }
+        }
+    }
+}
